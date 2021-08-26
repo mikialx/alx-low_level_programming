@@ -1,1 +1,1 @@
-#alx-pre_course
+# alx = low-level_programming
