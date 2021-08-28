@@ -1,1 +1,1 @@
-my c exercise
+my c exercise this week
