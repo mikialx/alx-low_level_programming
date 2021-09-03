@@ -1,4 +1,4 @@
-#include "main.h"
+#include "holberton.h"
 
 /**
  *powB - raises the number base to power power
@@ -76,8 +76,7 @@ void printnchar(int n)
 
 				tmp2 = num;
 				num -= powB(10, j) * digit1;
-			
-	if (numLength(tmp2) - numLength(num) == 2)
+				if (numLength(tmp2) - numLength(num) == 2)
 				{
 					_putchar(48);
 					j--;
@@ -101,3 +100,4 @@ void print_number(int n)
 
 	printnchar(n);
 }
+
