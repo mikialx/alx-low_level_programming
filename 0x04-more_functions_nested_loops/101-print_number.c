@@ -101,4 +101,3 @@ void print_number(int n)
 
 	printnchar(n);
 }
-
