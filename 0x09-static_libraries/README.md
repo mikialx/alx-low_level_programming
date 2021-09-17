@@ -1,0 +1,1 @@
+ my static libraries exercies my static libraries exercies my static libraries exercies my static libraries exercies my static libraries exercies my static libraries exercies my static libraries exercies my static libraries exercies
