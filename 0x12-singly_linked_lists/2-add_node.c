@@ -3,42 +3,42 @@
 #include "lists.h"
 
 /**
- *stringlen - calculates the length of a string
- *@str: pointer to the string
- *
- *Return: the length of the string
- */
-
-unsigned int stringlen(const char *str)
+  *_strlen - finds length of a string.
+  *@str: string.
+  *
+  *Return: lengt of string.
+  */
+int _strlen(const char *str)
 {
-	unsigned int i = 0;
+	int i;
 
-		while (str[i] != '\0')
-		{
-			i++;
-		}
-		return (i);
+	while (str[i] != '\0')
+		i++;
+
+	return (i);
 }
 
 /**
- *add_node = adds a new node to the beginning of a linked list
- *@head: the head pointer of the linked list
- *@str: the string to add to the node field called str
- *
- *Return: the address of the new element or NULL if failed
- */
-
+  *add_node - adds a new node at the beginning of a list_t.
+  *@head: pointer to first element of the list.
+  *@str: string to be duplicated.
+  *
+  *Return: address of the new element or NULL if it failed.
+  */
 list_t *add_node(list_t **head, const char *str)
 {
-	list_t *new;
+	list_t *temp;
 
-	new = malloc(sizeof(list_t));
-	if (new == NULL)
+	temp = malloc(sizeof(list_t));
+	if (temp == NULL)
 		return (NULL);
+	/* temp now points to first element*/
+	temp->next = *head;
+	temp->str = strdup(str);
+	temp->len = _strlen(str);
 
-	new->str = strdup(str);
-	new->len = stringlen(str);
-	new->next = *head;
-	*head = new;
+	*head = temp;
+
 	return (*head);
+
 }
