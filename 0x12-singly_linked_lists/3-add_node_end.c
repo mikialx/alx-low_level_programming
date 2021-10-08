@@ -1,45 +1,50 @@
 #include "lists.h"
 /**
- * add_node_end - adds a new node at the end of a linked list
- * @head: head of the linked list
- * @str: string in the struct
- *
- * Return: the address of the new element or NULL if it failed
- */
+  *_strlen - returns length of string.
+  *@str: string;
+  *
+  *Return: length of string.
+  */
+int _strlen(const char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+
+	return (i);
+
+}
+/**
+  *add_node_end - adds a new node at the end of a list_t.
+  *@head: pointer to head element.
+  *@str: string to be duplicated
+  *
+  *Return: address of the new element.
+  */
 list_t *add_node_end(list_t **head, const char *str)
 {
-	list_t *newnode;
-	list_t *final = *head;
-	int newelem = 0;
+	list_t *newNode, *lastNode;
 
-	newnode = malloc(sizeof(list_t));
-
-	if (newnode == NULL)
-	{
+	newNode = malloc(sizeof(list_t));
+	if (newNode == NULL)
 		return (NULL);
-	}
 
-	newnode->str = strdup(str);
-
-	newnode->next = NULL;
+	newNode->str = strdup(str);
+	newNode->len = _strlen(str);
+	newNode->next = NULL;
 
 	if (*head == NULL)
-	{
-		*head = newnode;
-	}
+		*head = newNode;
 	else
 	{
-		while (final->next != NULL)
-		{
-			final = final->next;
-		}
-		final->next = newnode;
+		lastNode = *head;
+
+		while (lastNode->next != NULL)
+			lastNode = lastNode->next;
+		lastNode->next = newNode;
 	}
 
-	while (str[newelem])
-	{
-		newelem++;
-	}
-	newnode->len = newelem;
-	return (newnode);
+	return (newNode);
 }
