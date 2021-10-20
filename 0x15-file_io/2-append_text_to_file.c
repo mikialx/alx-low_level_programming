@@ -1,45 +1,40 @@
-#include "main.h"
-
+#include "holberton.h"
 /**
- * append_text_to_file - main function.
- * @filename: The pointer name of the file.
- * @text_content: The string.
+ *append_text_to_file - appends a text at the end of a file
+ *@filename: name of the file
+ *@text_content: text to append to the file
  *
- * Description: This function appends text at the end of a file.
- *
- * Return: 1 on success and -1 on failure.
+ *Return: 1 on success, -1 on failure
  */
 int append_text_to_file(const char *filename, char *text_content)
 {
-	int fd, n, i;
+	int filedes;
+	int numletters = 0;
+	int i = 0;
+	ssize_t byteswritten;
 
-	if (!filename)
-	{
+	if (filename == NULL)
 		return (-1);
+
+	filedes = open(filename, O_WRONLY | O_APPEND);
+	if (filedes == -1)
+		return (-1);
+
+	if (text_content == NULL)
+	{
+		close(filedes);
+		return (1);
 	}
 
-	if (text_content)
+	while (*(text_content + i) != '\0')
 	{
-		for (i = 0; text_content[i]; i++)
-		{
-			;
-		}
+		numletters++;
+		i++;
 	}
 
-	fd = open(filename, O_WRONLY | O_APPEND);
-	{
-		if (fd == -1)
-		{
-			return (-1);
-		}
-	}
-	n = write(fd, text_content, i);
-	{
-		if (n == -1)
-		{
-			return (-1);
-		}
-	}
-	close(fd);
+	byteswritten = write(filedes, text_content, numletters);
+	if (byteswritten == -1)
+		return (-1);
+	close(filedes);
 	return (1);
 }
