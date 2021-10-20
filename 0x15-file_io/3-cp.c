@@ -1,70 +1,63 @@
-#include "main.h"
-
+#include "holberton.h"
 /**
- * main - main program.
- * @argc: The number of arguments.
- * @argv: Each argument.
- * Description: This program copies the content of a file to another file.
- * Return: 0.
+ *main - entry point
+ *@ac: the number of command line arguments
+ *@av: an array of command line argument strings
+ *
+ *Description: The function will copy the content from one file
+ *to another
+ *Return: 0 when successful, 1 otherwise
  */
-int main(int argc, char *argv[])
+int main(int ac, char *av[])
 {
-	int fd1, fd2, w, i;
-	char b[1024];
+	int fileto, filefrom, closestatusto, closestatusfrom;
+	ssize_t bytesread, byteswritten;
+	char buf[1024];
 
-	if (argc != 3)
+	if (ac != 3)
 	{
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+		dprintf(2, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
-
-	fd1 = open(argv[1], O_RDONLY);
+	fileto = open(av[2], O_WRONLY | O_CREAT | O_TRUNC, 0664);
+	filefrom = open(av[1], O_RDONLY);
+	if (fileto == -1 || filefrom == -1)
 	{
-		if (fd1 == -1)
+		if (fileto == -1)
 		{
-			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
+			exit(99);
+		}
+		if (filefrom == -1)
+		{
+			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
 			exit(98);
 		}
-	}
 
-	fd2 = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0664);
+	}
+	while ((bytesread = read(filefrom, buf, 1024)) != 0)
 	{
-		if (fd2 == -1)
+		if (bytesread == -1)
 		{
-			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
+			exit(98);
+		}
+		byteswritten = write(fileto, buf, bytesread);
+		if (byteswritten == -1)
+		{
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
 			exit(99);
 		}
 	}
-
-	while ((i = read(fd1, b, 1024)) != 0)
+	closestatusto = close(fileto);
+	closestatusfrom = close(filefrom);
+	if (closestatusto == -1 || closestatusfrom == -1)
 	{
-		if (i == -1)
-		{
-			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-			exit(98);
-		}
-
-		w = write(fd2, b, i);
-		{
-			if (w == -1)
-			{
-				dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-				exit(99);
-			}
-		}
-	}
-
-	if (close(fd1) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd1);
+		if (closestatusto == -1)
+			dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fileto);
+		if (closestatusfrom == -1)
+			dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", filefrom);
 		exit(100);
 	}
-
-	if (close(fd2) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd2);
-		exit(100);
-	}
-
 	return (0);
 }
